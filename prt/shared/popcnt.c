@@ -35,31 +35,29 @@ uint64_t popcnt64_fast(uint64_t *p, size_t len) {
 #ifdef PRT_ARM
 #ifdef PRT_ARCH64
 uint64_t popcnt64_fast(uint64_t *p, size_t len) {
-  size_t i;
-  uint64_t c, mask;
+  unsigned long long *d = p;
+  unsigned int masked = 0, i = 0;
+  int c = 0;
 
-  c = 0;
-  mask = len & ~3;
+  masked = len & ~3;
+  for (; i < masked; i += 4)
+    __asm__("LD1 {v0.2D, v1.2D}, [%1], #32    \n\t"
+            "CNT v0.16b, v0.16b               \n\t"
+            "CNT v1.16b, v1.16b               \n\t"
+            "UADDLV h2, v0.16b                \n\t"
+            "UADDLV h3, v1.16b                \n\t"
+            "ADD d2, d3, d2                   \n\t"
+            "UMOV x0, v2.d[0]                 \n\t"
+            "ADD %0, x0, %0                   \n\t"
+            : "+r"(c), "+r"(d)::"x0", "v0", "v1", "v2", "v3");
 
-  /* 4x unrolled loop */
-  for (i = 0; i < mask; i += 4)
-    __asm__("cnt %1, %1  \n\t"
-            "add %1, %0  \n\t"
-            "cnt %2, %2  \n\t"
-            "add %2, %0  \n\t"
-            "cnt %3, %3  \n\t"
-            "add %3, %0  \n\t"
-            "cnt %4, %4  \n\t"
-            "add %4, %0  \n\t"
-            : "+r"(c)
-            : "r"(p[i]), "r"(p[i + 1]), "r"(p[i + 2]), "r"(p[i + 3]));
-
-  /* add the remaining items (max 3) */
-  for (i = 0; i < (len & 3); ++i)
-    __asm__("cnt %1, %1  \n\t"
-            "add %1, %0  \n\t"
-            : "+r"(c)
-            : "r"(p[mask + i]));
+  for (; i < len; ++i)
+    __asm__("LD1  {v0.D}[0], [%1], #8 \n\t"
+            "CNT  v0.8b, v0.8b        \n\t"
+            "UADDLV h1, v0.8b         \n\t"
+            "UMOV x0, v1.d[0]         \n\t"
+            "ADD %0, x0, %0           \n\t"
+            : "+r"(c), "+r"(d)::"x0", "v0", "v1");
 
   return c;
 }
