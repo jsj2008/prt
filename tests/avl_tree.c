@@ -1,5 +1,5 @@
 #include <tests/common.h>
-#include <src/shared/avl_tree.h>
+#include <prt/shared/avl_tree.h>
 
 int pointer_compare(void *a, void *b) {
   intptr_t d = (intptr_t)a - (intptr_t)b;

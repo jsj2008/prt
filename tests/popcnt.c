@@ -1,5 +1,5 @@
 #include <tests/common.h>
-#include <src/shared/popcnt.h>
+#include <prt/shared/popcnt.h>
 
 int main(int argc, const char *argv[]) {
   size_t c;

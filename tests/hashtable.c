@@ -1,5 +1,5 @@
 #include <tests/common.h>
-#include <src/shared/hashtable.h>
+#include <prt/shared/hashtable.h>
 
 const char *strings[] = {"asd",      "dg",      "asgfasg", "sdgsd",  "sdxgsdg",
                          "sdgsdtjg", "wjtrf",   "fsaf",    "v26t2",  "626ggfd",

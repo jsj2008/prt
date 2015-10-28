@@ -1,5 +1,5 @@
 #include <tests/common.h>
-#include <src/shared/kd_tree.h>
+#include <prt/shared/kd_tree.h>
 
 #define AS_STRING(r) (r == 0 ? "OK" : "FAILED")
 

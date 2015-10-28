@@ -1,5 +1,5 @@
 #include <tests/common.h>
-#include <src/shared/sparse_hash.h>
+#include <prt/shared/sparse_hash.h>
 
 const char *strings[] = {"asd",      "dg",      "asgfasg", "sdgsd",  "sdxgsdg",
                          "sdgsdtjg", "wjtrf",   "fsaf",    "v26t2",  "626ggfd",

@@ -1,5 +1,5 @@
-AC_INIT([prt], [0.1.0])
-AC_CONFIG_SRCDIR([src/shared/basic.c])
+AC_INIT([prt], [0.1.2])
+AC_CONFIG_SRCDIR([prt/shared/basic.c])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_MACRO_DIR([m4]) 

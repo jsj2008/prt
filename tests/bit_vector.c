@@ -1,5 +1,5 @@
 #include <tests/common.h>
-#include <src/shared/bit_vector.h>
+#include <prt/shared/bit_vector.h>
 
 int main(int argc, const char *argv[]) {
   BitVector *vec;

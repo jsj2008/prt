@@ -1,5 +1,5 @@
 #include <tests/common.h>
-#include <src/shared/fast_hash.h>
+#include <prt/shared/fast_hash.h>
 
 struct Data {
   char *key;
