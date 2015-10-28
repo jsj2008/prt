@@ -41,4 +41,4 @@ AC_ARG_ENABLE([examples],
 AM_CONDITIONAL([EXAMPLES], [test x$examples = xtrue])
 AM_COND_IF([EXAMPLES], [AC_CONFIG_FILES(examples/Makefile)])
 
-AC_OUTPUT(Makefile src/Makefile tests/Makefile)
+AC_OUTPUT(Makefile prt/Makefile tests/Makefile)

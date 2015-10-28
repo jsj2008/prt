@@ -22,4 +22,4 @@ popcnt_SOURCES = popcnt.c
 sparse_hash_BIN = sparse_hash
 sparse_hash_SOURCES = sparse_hash.c
 
-bin_PROGRAMS = avl_tree bit_vector fast_hash hashtable kd_tree popcnt sparse_hash
+noinst_PROGRAMS = avl_tree bit_vector fast_hash hashtable kd_tree popcnt sparse_hash

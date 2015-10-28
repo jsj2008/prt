@@ -7,5 +7,5 @@ CXX = clang
 cpp_example01_BIN = cpp_example01
 cpp_example01_SOURCES = cpp-basic/main.cpp
 
-bin_PROGRAMS = cpp_example01
+noinst_PROGRAMS = cpp_example01
 AUTOMAKE_OPTIONS = subdir-objects
