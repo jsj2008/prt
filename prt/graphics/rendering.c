@@ -464,7 +464,7 @@ int renderinfo_render(RenderInfo *info, float dt) {
   for (i = info->attribs, n = 0; i > 0; i >>= 1, n++)
     if (i & 1)
       GL_CHECK(glEnableVertexAttribArray(n));
-  
+
   GL_CHECK(glDrawArrays(info->primitive->primitive,
                         info->primitive->start_primitive,
                         info->primitive->num_primitives));

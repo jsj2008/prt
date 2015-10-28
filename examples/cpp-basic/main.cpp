@@ -126,10 +126,10 @@ struct Window {
   int WindowLoop();
   int Draw();
 
-  glm::mat4 camera_;         /* camera matrix */
-  Array *array_;             /* render info array */
+  glm::mat4 camera_; /* camera matrix */
+  Array *array_;     /* render info array */
   Particles *sys_;
-  GPUTexture *texture_;      /* logo texture */
+  GPUTexture *texture_; /* logo texture */
   GPUTexture *particle_;
   struct primitive2d *logo_; /* logo transform */
   size_t count_;             /* used for logo animation */
@@ -186,9 +186,10 @@ int Window::WindowLoop() {
   GL_CHECK(glEnable(GL_TEXTURE_2D));
   GL_CHECK(glActiveTexture(GL_TEXTURE0));
   GL_CHECK(glBindTexture(GL_TEXTURE_2D, this->particle_->id));
-  GLfloat points[] = { 0.5f, 0.5f, 1.0f, 150.0f, 175.0f, 1.0f };
-  GLfloat colors[] = { 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f };
-  shader_pass_set_uniform(this->pp_, HASH("mvp"), glm::value_ptr(this->camera_));
+  GLfloat points[] = {0.5f, 0.5f, 1.0f, 150.0f, 175.0f, 1.0f};
+  GLfloat colors[] = {1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+  shader_pass_set_uniform(this->pp_, HASH("mvp"),
+                          glm::value_ptr(this->camera_));
   GL_CHECK(glEnableVertexAttribArray(0));
   GL_CHECK(glEnableVertexAttribArray(3));
   GL_CHECK(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, &points[0]));
@@ -238,7 +239,7 @@ int Window::CreateSDLWindow() {
 }
 
 /* create fire particles */
-int Window::CreateParticles() { 
+int Window::CreateParticles() {
   Particles *p = NULL;
   RenderInfo *info = NULL;
   Pass *pass = NULL;
@@ -263,10 +264,11 @@ int Window::CreateParticles() {
 
   p->duration = 1.0f;
   p->angle_variance = 45.0f; /* or radians? hgmm */
-  p->start_color = (vec4){ .x = 1.0f, .y = 0.1f, .z = 0.14f, .w = 1.0f };
-  p->start_color_variance = (vec4){ .x = 0.0f, .y = 0.025f, .z = 0.04f, .w = 0.0f };
+  p->start_color = (vec4){.x = 1.0f, .y = 0.1f, .z = 0.14f, .w = 1.0f};
+  p->start_color_variance =
+      (vec4){.x = 0.0f, .y = 0.025f, .z = 0.04f, .w = 0.0f};
   p->linear_attenuation = true;
-  p->gravity = (vec3){ .x = -0.15f, .y = -0.15f, .z = 0.0f };
+  p->gravity = (vec3){.x = -0.15f, .y = -0.15f, .z = 0.0f};
   p->tangential_acceleration = 5.0f;
   p->radial_acceleration = 20.0f;
   p->radial_acceleration_variance = 10.0f;
@@ -276,7 +278,7 @@ int Window::CreateParticles() {
   p->emission_rate = 500.0f;
   p->life = 0.7f;
 
-  p->primitive.spatial.position = (union vector2d) { .x = 200.0f, .y = 200.0f };
+  p->primitive.spatial.position = (union vector2d){.x = 200.0f, .y = 200.0f};
   compute_model_matrix(p->primitive);
 
   this->sys_ = p;
@@ -301,7 +303,7 @@ out:
     return r;
   }
 
-  return 0; 
+  return 0;
 }
 
 /* create grid with single color */
@@ -491,17 +493,16 @@ int main(int argc, const char *argv[]) {
                       (void *)Names[ET_PARTICLES], p);
   win->pp_ = p;
 
-
   /* create rendering primitives for the texture */
-  //win->CreateLogo();
+  // win->CreateLogo();
   /* create backing grid */
-  //win->CreateGrid();
+  // win->CreateGrid();
   /* create cpu-particles system */
-  //win->CreateParticles();
+  // win->CreateParticles();
   //
-  //GLint range[2];
-  //glGetIntegerv(GL_ALIASED_POINT_SIZE_RANGE, range);
-  //printf("%i %i\n", range[0], range[1]);
+  // GLint range[2];
+  // glGetIntegerv(GL_ALIASED_POINT_SIZE_RANGE, range);
+  // printf("%i %i\n", range[0], range[1]);
 
   while (win->WindowLoop() == 0)
     usleep(3);

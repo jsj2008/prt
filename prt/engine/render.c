@@ -24,7 +24,7 @@ int render_particles(RenderInfo *info, float dt) {
   GL_CHECK(glVertexAttribPointer(ATTR_VERTEX, 3, GL_FLOAT, 0, 0, (void *)0));
   GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, particles->vbo_colors));
   GL_CHECK(glVertexAttribPointer(ATTR_COLOR, 4, GL_FLOAT, 0, 0, (void *)0));*/
-  
+
   GL_CHECK(glBindVertexArray(particles->vao));
 
   return 0;

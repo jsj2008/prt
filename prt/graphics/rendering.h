@@ -26,7 +26,7 @@ typedef struct _RenderPrimitive {
   uint32_t num_primitives;
   uint32_t start_primitive;
   uint32_t instances;
-  //RenderIndirect indirect;
+  // RenderIndirect indirect;
 } RenderPrimitive;
 
 typedef struct _RenderInfo {

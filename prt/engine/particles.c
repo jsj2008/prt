@@ -123,8 +123,9 @@ int particles_init_particle(Particles *particles, size_t index) {
   pd->position[index].z =
       particles->position.z + particles->position_variance.z * RAND();
 
-  printf("particles: x: %f y: %f %p\n", particles->position.x, particles->position.y, pd->position);
-  //printf("x: %f y: %f\n", pd->position[index].x, pd->position[index].y);
+  printf("particles: x: %f y: %f %p\n", particles->position.x,
+         particles->position.y, pd->position);
+  // printf("x: %f y: %f\n", pd->position[index].x, pd->position[index].y);
 
   /* compute velocity/direction vector */
   speed = particles->speed + particles->speed_variance * RAND();
@@ -179,7 +180,7 @@ int particles_init_particle(Particles *particles, size_t index) {
        pd->color[index].w) /
       pd->life[index];
 
-  //printf("x: %f y: %f\n", pd->position[index].x, pd->position[index].y);
+  // printf("x: %f y: %f\n", pd->position[index].x, pd->position[index].y);
   return 0;
 }
 
@@ -193,7 +194,8 @@ int particles_tick(Particles *particles, float dt) {
   assert(particles);
 
   pd = &particles->data;
-  puts("======================================== TICK =================================================");
+  puts("======================================== TICK "
+       "=================================================");
 
   /* emit particles if active and emission rate above zero */
   if (particles->active && particles->emission_rate > 0.f) {
@@ -219,15 +221,17 @@ int particles_tick(Particles *particles, float dt) {
   index = 0;
   while (index < particles->particle_count) {
     if (pd->life[index] > 0.0f) {
-      printf("-- x: %f y: %f - %zu %zu %p %f\n", pd->position[index].x, pd->position[index].y, index, particles->particle_count, pd->position, dt);
+      printf("-- x: %f y: %f - %zu %zu %p %f\n", pd->position[index].x,
+             pd->position[index].y, index, particles->particle_count,
+             pd->position, dt);
       /* compute normalization factor */
       factor = (pd->position[index].x + pd->position[index].y);
       if (factor > 0.0f)
         factor = 1.0 / factor;
-      else 
+      else
         factor = 1.0f;
 
-//      printf("factor: %f\n", factor);
+      //      printf("factor: %f\n", factor);
 
       /* swap axes in position */
       normalized.x = pd->position[index].y * factor;
@@ -275,7 +279,8 @@ int particles_tick(Particles *particles, float dt) {
       /* the shader uses the z coordinate as point size */
       pd->position[index].z = pd->size[index]; // pd->position[index].z +
                                                // (pd->direction[index].z * dt);
-      //printf("x: %f y: %f : %zu\n", pd->position[index].x, pd->position[index].y, index);
+      // printf("x: %f y: %f : %zu\n", pd->position[index].x,
+      // pd->position[index].y, index);
 
     } else {
       particles->particle_count--;
@@ -302,6 +307,4 @@ int particles_tick(Particles *particles, float dt) {
   return 0;
 }
 
-int particles_unref(Particles *particles) {
-  return 0;
-}
+int particles_unref(Particles *particles) { return 0; }
