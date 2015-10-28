@@ -1,5 +1,5 @@
 AM_CFLAGS = -I../
-AM_LDFLAGS = ../src/libprt.la
+AM_LDFLAGS = ../prt/libprt.la
 
 avl_tree_BIN = avl_tree
 avl_tree_SOURCES = avl_tree.c
