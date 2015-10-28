@@ -1,5 +1,5 @@
                         prt framework
-                           v0.1.0
+                        =============
 
 `prt` is a shorthand for `prerequisite` and as such forms a basis for building
 OpenGL ES accelerated applications on top of battle-tested open source 
@@ -21,6 +21,7 @@ of most common tasks:
    * mesh graph flattening
   * string pool
  * rendering
+  * kd-tree
   * deferred renderer
   * render list is secondarily (primarily by `render_info->order`) sorted by the 
     amount of OpenGL state changes needed for rendering
