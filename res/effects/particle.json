@@ -1,0 +1,14 @@
+{
+	"name": "particle",
+	"version": 1,
+	"vertex": "res/shaders/particle-vertex.shd",
+	"fragment": "res/shaders/particle-fragment.shd",
+	"attributes": [
+		{ "name": "vertex", "type": "float3" },
+		{ "name": "color", "type": "float4" }
+	],
+	"uniforms": [
+		{ "name": "mvp", "type": "float4x4" },
+		{ "name": "stexture", "type": "texture" }
+	]
+}

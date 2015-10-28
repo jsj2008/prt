@@ -1,0 +1,10 @@
+#version 300 es
+
+uniform lowp vec4 color;
+
+layout(location = 0) out lowp vec4 ocolor;
+
+void main()
+{
+	ocolor = color;
+}

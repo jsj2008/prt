@@ -1,0 +1,14 @@
+{
+	"name": "solid-texture",
+	"version": 1,
+	"vertex": "res/shaders/generic-vertex.shd",
+	"fragment": "res/shaders/texture-fragment.shd",
+	"attributes": [
+		{ "name": "vertex", "type": "float3" },
+		{ "name": "texcoord", "type": "float2" }
+	],
+	"uniforms": [
+		{ "name": "mvp", "type": "float4x4" },
+		{ "name": "stexture", "type": "texture" }
+	]
+}

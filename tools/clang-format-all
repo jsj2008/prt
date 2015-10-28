@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for SRC in $(find ${1:-.} -name '*.[ch]' -o -name '*.cpp'); do
+  clang-format $SRC > /tmp/$(basename $SRC).2 2>/dev/null
+  mv /tmp/$(basename $SRC).2 $SRC
+done
+

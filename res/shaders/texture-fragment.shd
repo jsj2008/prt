@@ -1,0 +1,11 @@
+#version 300 es
+
+uniform sampler2D stexture;
+in mediump vec2 vtexcoord;
+
+layout(location = 0) out lowp vec4 color;
+
+void main()
+{
+	color = texture(stexture, vtexcoord);
+}

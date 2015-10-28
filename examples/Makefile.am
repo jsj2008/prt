@@ -1,0 +1,11 @@
+AM_CPPFLAGS = -I../
+AM_LDFLAGS = ../src/libprt.la -lstdc++ -lGL -lSDL2
+
+CC = clang
+CXX = clang
+
+cpp_example01_BIN = cpp_example01
+cpp_example01_SOURCES = cpp-basic/main.cpp
+
+bin_PROGRAMS = cpp_example01
+AUTOMAKE_OPTIONS = subdir-objects

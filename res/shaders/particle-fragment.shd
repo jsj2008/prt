@@ -1,0 +1,12 @@
+#version 300 es
+
+uniform sampler2D stexture;
+in lowp vec4 vcolor;
+
+layout(location = 0) out lowp vec4 color;
+
+void main()
+{ 
+    color = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    //color = texture(stexture, gl_PointCoord) * vcolor;    
+}

@@ -1,0 +1,13 @@
+{
+	"name": "solid-color",
+	"version": 1,
+	"vertex": "res/shaders/generic-vertex.shd",
+	"fragment": "res/shaders/solidcolor-fragment.shd",
+	"attributes": [
+		{ "name": "vertex", "type": "float3" }
+	],
+	"uniforms": [
+		{ "name": "color", "type": "float4" },
+		{ "name": "mvp", "type": "float4x4" }
+	]
+}

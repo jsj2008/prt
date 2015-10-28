@@ -1,0 +1,37 @@
+                        prt framework
+                           v0.1.0
+
+`prt` is a shorthand for `prerequisite` and as such forms a basis for building
+OpenGL ES accelerated applications on top of battle-tested open source 
+solutions like `SDL`, `Assimp`, `GLM` and `stb_image`. On top of these
+interfaces `prt` provides additional data structures for comfortable handling
+of most common tasks:
+ * key/value handling
+  * avl tree
+  * hashtable
+  * sparse hashtable with lazy allocated buckets
+  * FastHash for small and effecient key/value semantics with up to 100 elements
+ * runtime
+  * resource manager
+  * asynchronous loading
+  * locking and wait handle management
+  * JSON effect description
+  * texture loading (png, jpg)
+  * mesh loading (configurable via assimp)
+   * mesh graph flattening
+  * string pool
+ * rendering
+  * deferred renderer
+  * render list is secondarily (primarily by `render_info->order`) sorted by the 
+    amount of OpenGL state changes needed for rendering
+  * basic primitive rendering
+  * sub-system rendering
+  * currently only Vertex and Fragment shaders are supported
+ * other
+  * fast popcnt implementation for x86_64 and Aarch64
+  * doubly linked lists
+  * logging
+  * wrap/overflow safe `size_t` / `ssize_t` operations
+  * string functions
+  * hashing
+  * etc.
