@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <prt/shared/config.h>
 
 /***************************
  Prerequisite Runtime v0.3
@@ -24,8 +25,10 @@ extern "C" {
 /*#define PRT_ARCH32*/
 /*#define PRT_ARM*/
 
-#define PRT_INTEL
-#define PRT_ARCH64
+/*#define PRT_INTEL
+#define PRT_ARCH64*/
+/*#define @PRT_CPU@
+#define @PRT_ARCH@*/
 
 #ifdef PRT_ARCH64
 typedef uint64_t Id;

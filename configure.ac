@@ -1,4 +1,5 @@
 AC_INIT([prt], [0.1.2])
+AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR([prt/shared/basic.c])
 AM_INIT_AUTOMAKE
 
@@ -41,4 +42,32 @@ AC_ARG_ENABLE([examples],
 AM_CONDITIONAL([EXAMPLES], [test x$examples = xtrue])
 AM_COND_IF([EXAMPLES], [AC_CONFIG_FILES(examples/Makefile)])
 
+AC_CACHE_CHECK([target architecture], [prt_cv_target_cpu],
+               [case $target in
+                i?86-*)                 prt_cv_target_cpu="PRT_INTEL" ;;
+                amd64-* | x86_64-*)     prt_cv_target_cpu="PRT_INTEL" ;;
+                arm64*-*)               prt_cv_target_cpu="PRT_ARM" ;;
+                arm*-*)                 prt_cv_target_cpu="PRT_ARM" ;;
+                aarch64*-*)             prt_cv_target_cpu="PRT_ARM" ;;
+                *)                      prt_cv_target_cpu="Unknown" ;;
+                esac])
+
+AC_CACHE_CHECK([target architecture], [prt_cv_target_arch],
+               [case $target in
+                i?86-*)                 prt_cv_target_arch="PRT_ARCH32" ;;
+                amd64-* | x86_64-*)     prt_cv_target_arch="PRT_ARCH64" ;;
+                arm64*-*)               prt_cv_target_arch="PRT_ARCH64" ;;
+                arm*-*)                 prt_cv_target_arch="PRT_ARCH32" ;;
+                aarch64*-*)             prt_cv_target_arch="PRT_ARCH64" ;;
+                *)                      prt_cv_target_arch="Unknown" ;;
+                esac])
+
+if test "$prt_cv_target_arch" = "Unknown" ; then
+    AC_MSG_ERROR([Configuring prt for an unknown target archicture])
+fi
+
+AC_DEFINE_UNQUOTED($prt_cv_target_cpu)
+AC_DEFINE_UNQUOTED($prt_cv_target_arch)
+
+AC_CONFIG_HEADERS([prt/shared/config.h:prt/shared/config.h.in])
 AC_OUTPUT(Makefile prt/Makefile tests/Makefile)
