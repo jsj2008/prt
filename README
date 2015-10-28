@@ -35,3 +35,16 @@ of most common tasks:
   * string functions
   * hashing
   * etc.
+
+Build
+=====
+
+On Fedora 22, you're going to need these packages:
+
+```
+autoconf automake git make which clang libtool assimp-devel
+glm-devel SDL2 SDL2-devel mesa-libGL mesa-libGLES mesa-libGL-devel
+mesa-libGLES-devel gcc-c++
+```
+
+Or use the Dockerfile.
