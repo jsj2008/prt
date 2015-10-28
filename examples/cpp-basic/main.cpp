@@ -1,8 +1,8 @@
-#include <src/shared/basic.h>
-#include <src/graphics/texture.h>
-#include <src/graphics/shader.h>
-#include <src/engine/render.h>
-#include <src/engine/particles.h>
+#include <prt/shared/basic.h>
+#include <prt/graphics/texture.h>
+#include <prt/graphics/shader.h>
+#include <prt/engine/render.h>
+#include <prt/engine/particles.h>
 
 #define GLM_FORCE_RADIANS
 #include <glm/vec3.hpp>
