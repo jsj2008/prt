@@ -1,5 +1,5 @@
 AM_CPPFLAGS = -I../
-AM_LDFLAGS = ../src/libprt.la -lstdc++ -lGL -lSDL2
+AM_LDFLAGS = ../prt/libprt.la -lstdc++ -lGL -lSDL2
 
 CC = clang
 CXX = clang
