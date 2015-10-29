@@ -200,7 +200,7 @@ int resource_manager_load(ResourceManager *manager, const char *path,
   r = hashtable_find(manager->resources, HASH(p), (void *)p, (void **)&fr);
   if (!r) {
     /* cache hit, update `out_fr` if not null */
-    if (*out_fr)
+    if (out_fr)
       *out_fr = fr;
     return 0;
   }
