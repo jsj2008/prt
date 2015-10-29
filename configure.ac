@@ -68,6 +68,10 @@ fi
 
 AC_DEFINE_UNQUOTED($prt_cv_target_cpu)
 AC_DEFINE_UNQUOTED($prt_cv_target_arch)
+AH_TEMPLATE([PRT_ARCH32], [CPU Bits])
+AH_TEMPLATE([PRT_ARCH64], [CPU Bits])
+AH_TEMPLATE([PRT_INTEL], [CPU Type])
+AH_TEMPLATE([PRT_ARM], [CPU Type])
 
 AC_CONFIG_HEADERS([prt/shared/config.h:prt/shared/config.h.in])
 AC_OUTPUT(Makefile prt/Makefile tests/Makefile)
