@@ -14,21 +14,9 @@
 #include <stdarg.h>
 #include <prt/shared/config.h>
 
-/***************************
- Prerequisite Runtime v0.3
-***************************/
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/*#define PRT_ARCH32*/
-/*#define PRT_ARM*/
-
-/*#define PRT_INTEL
-#define PRT_ARCH64*/
-/*#define @PRT_CPU@
-#define @PRT_ARCH@*/
 
 #ifdef PRT_ARCH64
 typedef uint64_t Id;
@@ -50,9 +38,16 @@ typedef uint32_t Id;
 
 #define ADD_WRAP_SAFE(x, y)                                                    \
   ({                                                                           \
-    size_t __d__ = x, __c__ = (size_t)x + (size_t)y;                           \
-    assert(__d__ < __c__);                                                     \
+    typeof(x) __c__ = x + y;                                                   \
+    assert(x < __c__);                                                         \
     __c__;                                                                     \
+  })
+
+#define ADD_OVERFLOW_SAFE(a, b)                                                \
+  ({                                                                           \
+    typeof(a) __c__ = a + b;                                                   \
+    assert((b < 0 && a > __c__) || (b > 0 && __c__ > a));                      \
+    _c_;                                                                       \
   })
 
 #define COUNT(x) (sizeof(x) / sizeof(x[0]))
