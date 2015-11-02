@@ -15,6 +15,8 @@ int string_pool_new(size_t capacity, StringPool **out_pool) {
 
   pool->capacity = capacity;
 
+  *out_pool = pool;
+
   return 0;
 }
 
