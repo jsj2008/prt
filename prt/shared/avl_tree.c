@@ -2,6 +2,8 @@
 
 int binary_tree_new(BTCompare comparison, BinaryTree **out_tree) {
   BinaryTree *t;
+  assert(out_tree);
+
   t = NEW0(BinaryTree);
   if (!t)
     return -ENOMEM;
@@ -19,6 +21,7 @@ int binary_tree_new(BTCompare comparison, BinaryTree **out_tree) {
 static int create_node(BinaryTreeNode *parent, void *key, void *data,
                        BinaryTreeNode **out_node) {
   BinaryTreeNode *n;
+  assert(out_node);
 
   n = NEW0(BinaryTreeNode);
   if (!n)
@@ -40,6 +43,7 @@ static int find_insertion_point(BinaryTree *tree, void *key, int *last_compare,
   assert(last_compare);
   assert(tree);
   assert(tree->root);
+  assert(out_point);
 
   *last_compare = 0;
 
@@ -76,8 +80,8 @@ static int recalculate_height(BinaryTreeNode *node) {
 
 static int rotate_tree_left(BinaryTreeNode *r, BinaryTreeNode **out_rotated) {
   BinaryTreeNode *oldparent, *newtop;
-
   assert(r);
+  assert(out_rotated);
 
   oldparent = r->parent;
   newtop = r->right;
@@ -105,8 +109,8 @@ static int rotate_tree_left(BinaryTreeNode *r, BinaryTreeNode **out_rotated) {
 
 static int rotate_tree_right(BinaryTreeNode *r, BinaryTreeNode **out_rotated) {
   BinaryTreeNode *oldparent, *newtop;
-
   assert(r);
+  assert(out_rotated);
 
   oldparent = r->parent;
   newtop = r->left;
@@ -147,6 +151,8 @@ static int get_node_balance(BinaryTreeNode *node) {
 
 static int balance_up(BinaryTree *tree, BinaryTreeNode *node) {
   int balance;
+  assert(node);
+  assert(tree);
 
   while (true) {
     balance = get_node_balance(node);
@@ -173,7 +179,6 @@ static int balance_up(BinaryTree *tree, BinaryTreeNode *node) {
 
 static int swap_nodes(BinaryTreeNode *a, BinaryTreeNode *b) {
   void *ad, *ak;
-
   assert(a);
   assert(b);
 
@@ -191,8 +196,8 @@ static int swap_nodes(BinaryTreeNode *a, BinaryTreeNode *b) {
 static int find_replacement_node(BinaryTreeNode *node,
                                  BinaryTreeNode **out_node) {
   BinaryTreeNode *r;
-
   assert(node);
+  assert(out_node);
 
   if (node->right) {
     r = node->right;
@@ -212,7 +217,6 @@ static int find_replacement_node(BinaryTreeNode *node,
 
 static int delete_leaf_node(BinaryTree *tree, BinaryTreeNode *node) {
   BinaryTreeNode *parent;
-
   assert(tree);
   assert(node);
 
@@ -237,7 +241,6 @@ static int delete_leaf_node(BinaryTree *tree, BinaryTreeNode *node) {
 int binary_tree_insert(BinaryTree *tree, void *key, void *value) {
   BinaryTreeNode *n, *i;
   int comparison, r = 0;
-
   assert(tree);
 
 #ifdef BTREE_SYNCHRONIZED
@@ -288,9 +291,8 @@ int binary_tree_find(BinaryTree *tree, void *key, void **out_data) {
   void *ret;
   BinaryTreeNode *c;
   int comparison, r;
-
   assert(tree);
-  assert(key);
+  assert(out_data);
 
 #ifdef BTREE_SYNCHRONIZED
   lock_acquire(&tree->lock);
@@ -312,9 +314,8 @@ int binary_tree_delete_key(BinaryTree *tree, void *key, void **out_data) {
   BinaryTreeNode *swap, *c;
   void *data;
   int comparison, r;
-
   assert(tree);
-  assert(key);
+  assert(out_data);
 
 #ifdef BTREE_SYNCHRONIZED
   lock_acquire(&tree->lock);
@@ -348,7 +349,6 @@ out:
 
 int binary_tree_delete_node(BinaryTree *tree, BinaryTreeNode *node) {
   BinaryTreeNode *swap;
-
   assert(tree);
   assert(node);
 
@@ -382,8 +382,8 @@ int binary_tree_unref(BinaryTree *tree) {
 
 static int leftmost(BinaryTree *tree, BinaryTreeNode **out_node) {
   BinaryTreeNode *n;
-
   assert(tree);
+  assert(out_node);
 
   n = tree->root;
   while (n && n->left)
@@ -394,8 +394,8 @@ static int leftmost(BinaryTree *tree, BinaryTreeNode **out_node) {
 
 static int rightmost(BinaryTree *tree, BinaryTreeNode **out_node) {
   BinaryTreeNode *n;
-
   assert(tree);
+  assert(out_node);
 
   n = tree->root;
   while (n && n->right)
@@ -406,8 +406,8 @@ static int rightmost(BinaryTree *tree, BinaryTreeNode **out_node) {
 
 static int in_order_next(BinaryTreeNode *node, BinaryTreeNode **out_node) {
   BinaryTreeNode *n;
-
   assert(node);
+  assert(out_node);
 
   if (node->right) {
     n = node->right;
@@ -430,8 +430,8 @@ static int in_order_next(BinaryTreeNode *node, BinaryTreeNode **out_node) {
 
 static int in_order_previous(BinaryTreeNode *node, BinaryTreeNode **out_node) {
   BinaryTreeNode *n;
-
   assert(node);
+  assert(out_node);
 
   if (node->left) {
     n = node->left;
@@ -455,8 +455,8 @@ static int in_order_previous(BinaryTreeNode *node, BinaryTreeNode **out_node) {
 /* locks the tree */
 int binary_tree_enum_new(BinaryTree *tree, BinaryTreeEnum **out_enum) {
   BinaryTreeEnum *en;
-
   assert(tree);
+  assert(out_enum);
 
   en = NEW0(BinaryTreeEnum);
   if (!en)
@@ -473,8 +473,8 @@ int binary_tree_enum_new(BinaryTree *tree, BinaryTreeEnum **out_enum) {
 
 int binary_tree_enum_first(BinaryTreeEnum *enu, void **out_data) {
   BinaryTreeNode *n;
-
   assert(enu);
+  assert(out_data);
 
   (void)leftmost(enu->tree, &n);
   if (!n)
@@ -487,8 +487,8 @@ int binary_tree_enum_first(BinaryTreeEnum *enu, void **out_data) {
 
 int binary_tree_enum_last(BinaryTreeEnum *enu, void **out_data) {
   BinaryTreeNode *n;
-
   assert(enu);
+  assert(out_data);
 
   (void)rightmost(enu->tree, &n);
   if (!n)
@@ -501,8 +501,8 @@ int binary_tree_enum_last(BinaryTreeEnum *enu, void **out_data) {
 
 int binary_tree_enum_next(BinaryTreeEnum *enu, void **out_data) {
   BinaryTreeNode *n;
-
   assert(enu);
+  assert(out_data);
 
   if (!enu->node)
     (void)leftmost(enu->tree, &n);
@@ -525,8 +525,9 @@ int binary_tree_enum_next(BinaryTreeEnum *enu, void **out_data) {
 static int binary_tree_enum_next_kv(BinaryTreeEnum *enu, void **out_key,
                                     void **out_data) {
   BinaryTreeNode *n;
-
   assert(enu);
+  assert(out_key);
+  assert(out_data);
 
   if (!enu->node)
     (void)leftmost(enu->tree, &n);
@@ -548,6 +549,7 @@ static int binary_tree_enum_next_kv(BinaryTreeEnum *enu, void **out_key,
 
 int binary_tree_enum_previous(BinaryTreeEnum *enu, void **out_data) {
   assert(enu);
+  assert(out_data);
 
   (void)in_order_previous(enu->node, &enu->node);
   if (!enu->node) {
@@ -561,6 +563,8 @@ int binary_tree_enum_previous(BinaryTreeEnum *enu, void **out_data) {
 
 int binary_tree_enum_end(BinaryTreeEnum *enu, void **out_data) {
   assert(enu);
+  assert(out_data);
+
   (void)rightmost(enu->tree, &enu->node);
   *out_data = enu->node->data;
   return 0;
@@ -587,8 +591,9 @@ int binary_tree_to_array(BinaryTree *tree, void **out_array, size_t *out_size) {
   void **items, *key, *value;
   size_t i;
   int r;
-
   assert(tree);
+  assert(out_array);
+  assert(out_size);
 
   r = binary_tree_enum_new(tree, &en);
   if (r < 0)

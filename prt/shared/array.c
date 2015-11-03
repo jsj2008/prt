@@ -2,6 +2,7 @@
 
 int array_new(Array **out_array) {
   Array *a;
+  assert(out_array);
 
   a = NEW0(Array);
   if (!a)
@@ -43,7 +44,7 @@ int array_remove(Array *array, size_t start, size_t num) {
   size_t rest, next_size, copy;
   void *src, *dst;
   assert(array);
-  assert(ADD_WRAP_SAFE(start, num) < array->occupied);
+  assert(ADD_WRAP_SAFE(start, num) = < array->occupied);
 
   src = array->items + start;
   dst = array->items + start + num;

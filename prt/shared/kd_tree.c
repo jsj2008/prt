@@ -31,6 +31,7 @@ static int _insert_record(KdNode **node, const double *p, void *data, int dir,
   KdNode *n;
   int nd;
   assert(p);
+  assert(node);
 
   if (!*node) {
     n = NEW0(KdNode);
@@ -80,6 +81,7 @@ static int _hyper_rectangle_create(int dimension, const double *min,
   KdHyperRect *r;
   assert(min);
   assert(max);
+  assert(out_rectangle);
 
   r = NEW0(KdHyperRect);
   if (!r)
@@ -114,6 +116,8 @@ static int _hyper_rectangle_duplicate(KdHyperRect *original,
 }
 
 static int _hyper_rectangle_unref(KdHyperRect *rectangle) {
+  assert(rectangle);
+
   free((void *)rectangle->min);
   free((void *)rectangle->max);
   free((void *)rectangle);
@@ -126,6 +130,7 @@ static int _hyper_rectangle_distance_sq(KdHyperRect *r, const double *p,
   double sum = 0.0;
   assert(r);
   assert(p);
+  assert(out_distance);
 
   for (i = 0; i < r->dimension; ++i) {
     if (p[i] < r->min[i])
@@ -274,6 +279,7 @@ static int _find_nearest(KdNode *node, const double *p, double range,
 
 int kd_tree_new(int dimensions, KdTree **out_tree) {
   KdTree *tree;
+  assert(out_tree);
 
   tree = NEW0(KdTree);
   if (!tree)
@@ -403,6 +409,7 @@ int kd_tree_nearest(KdTree *tree, const double *p, KdIterator **out_iterator) {
   assert(tree);
   assert(tree->rectangle);
   assert(p);
+  assert(out_iterator);
 
 #ifdef KD_SYNCHRONIZED
   lock_acquire(&tree->lock);
@@ -468,6 +475,7 @@ int kd_tree_nearestf(KdTree *tree, const float *p, KdIterator **out_iterator) {
   bool stack;
   assert(tree);
   assert(p);
+  assert(out_iterator);
 
   stack = (tree->dimension * sizeof(double)) < 4096;
 
@@ -515,6 +523,7 @@ int kd_tree_nearest_range(KdTree *tree, const double *p, double range,
   int r;
   assert(tree);
   assert(p);
+  assert(out_iterator);
 
 #ifdef KD_SYNCHRONIZED
   lock_acquire(&tree->lock);
@@ -562,6 +571,7 @@ int kd_tree_nearest_rangef(KdTree *tree, const float *p, float range,
   bool stack;
   assert(tree);
   assert(p);
+  assert(out_iterator);
 
   stack = (tree->dimension * sizeof(double)) < 4096;
 
@@ -600,6 +610,8 @@ int kd_tree_nearest_range3(KdTree *tree, double x, double y, double z,
 }
 
 int kd_iterator_free(KdIterator *iterator) {
+  assert(iterator);
+
 #ifdef KD_SYNCHRONIZED
   lock_release(&iterator->tree->lock);
 #endif
@@ -618,6 +630,7 @@ bool kd_iterator_end(KdIterator *iterator) {
 }
 
 bool kd_iterator_next(KdIterator *iterator) {
+  assert(iterator);
   iterator->next = iterator->next->next;
   return iterator->next != NULL;
 }
@@ -639,6 +652,7 @@ int kd_iterator_item(KdIterator *iterator, double *p, void **out_data) {
 int kd_iterator_itemf(KdIterator *iterator, float *p, void **out_data) {
   size_t i;
   assert(iterator);
+  assert(out_data);
 
   if (iterator->next) {
     if (p)

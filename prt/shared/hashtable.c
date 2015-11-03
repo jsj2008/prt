@@ -93,6 +93,7 @@ int hashtable_new(size_t buckets, Hashtable **out_hash) {
   Hashtable *sh;
   size_t size;
   int r = -ENOMEM;
+  assert(out_hash);
 
   size = _hashtable_calc_size(buckets);
 
@@ -177,6 +178,7 @@ out:
 }
 
 int hashtable_add_str(Hashtable *hash, const char *key, void *value) {
+  assert(hash);
   assert(key);
   return hashtable_add(hash, hash->hash_func((void *)key), (void *)key, value);
 }
@@ -294,6 +296,7 @@ int hashtable_iterate(Hashtable *hash, HtIterator **out_iterator) {
   HtIterator *it;
   size_t next;
   assert(hash);
+  assert(out_iterator);
 
   it = NEW0(HtIterator);
   if (!it)
@@ -363,6 +366,8 @@ bool hashtable_iterator_end(HtIterator *iterator) {
 }
 
 int hashtable_iterator_unref(HtIterator *iterator) {
+  assert(iterator);
+
 #ifdef HASH_SYNCHRONIZED
   lock_release(&iterator->hashtable->lock);
 #endif

@@ -20,6 +20,7 @@ static int _sparse_hash_insert_bucket(Element **bucket, Id key, void *value) {
   void *mh;
   Element *b;
   size_t s, i;
+  assert(bucket);
 
   s = 0;
 
@@ -45,6 +46,7 @@ static int _sparse_hash_insert_bucket(Element **bucket, Id key, void *value) {
 /* appends new bucket and returns it, `hash->vector` is not updated */
 static int _sparse_hash_append_bucket(SparseHash *hash, Element ***out_bucket) {
   assert(hash);
+  assert(out_bucket);
 
   /* assert ? */
   if (hash->num_buckets >= hash->capacity)
@@ -133,6 +135,7 @@ int sparse_hash_new(size_t buckets, SparseHash **out_hash) {
   SparseHash *sh;
   size_t size;
   int r = -ENOMEM;
+  assert(out_hash);
 
   size = _sparse_hash_calc_size(buckets);
 

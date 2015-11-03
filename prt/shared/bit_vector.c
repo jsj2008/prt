@@ -5,6 +5,7 @@ int bitvector_new(size_t num_bits, BitVector **out_vector) {
   BitVector *bv;
   uint64_t *data;
   size_t items;
+  assert(out_vector);
 
   items = 1;
   if (num_bits > 64)

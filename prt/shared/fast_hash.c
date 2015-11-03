@@ -1,25 +1,15 @@
 #include <prt/shared/fast_hash.h>
 
-int unsigned_pointer_compare(void *a, void *b) {
-  uintptr_t _a = (uintptr_t)a;
-  uintptr_t _b = (uintptr_t)b;
-
-  if (_a > _b)
-    return 1;
-  else if (_a < _b)
-    return -1;
-  return 0;
-}
-
 int fasthash_builder_new(FastHashBuilder **out_builder) {
   FastHashBuilder *fhb;
   int r;
+  assert(out_builder);
 
   fhb = NEW0(FastHashBuilder);
   if (!fhb)
     return -ENOMEM;
 
-  r = binary_tree_new(unsigned_pointer_compare, &fhb->tree);
+  r = binary_tree_new(pointer_compare, &fhb->tree);
   if (r < 0) {
     free((void *)fhb);
     return r;
@@ -40,7 +30,6 @@ int fasthash_builder_insert(FastHashBuilder *builder, void *keys, void *values,
                             size_t n) {
   size_t i;
   int r;
-
   assert(builder);
 
   for (i = 0; i < n; ++i) {
@@ -63,8 +52,8 @@ int fasthash_builder_unref(FastHashBuilder *builder) {
 int fasthash_build(FastHashBuilder *builder, FastHash **out_hash) {
   FastHash *fh;
   int r;
-
   assert(builder);
+  assert(out_hash);
 
   fh = NEW0(FastHash);
   if (!fh)
@@ -84,8 +73,8 @@ int fasthash_build(FastHashBuilder *builder, FastHash **out_hash) {
 int fasthash_find(FastHash *hash, void *key, void **out_value) {
   size_t n, k;
   int cmp;
-
   assert(hash);
+  assert(out_value);
 
   k = hash->num_items >> 1;
   n = 0;
@@ -94,7 +83,7 @@ int fasthash_find(FastHash *hash, void *key, void **out_value) {
 #define VALUE_PTR_AT(h, n) *((void **)h->items + (n * 2) + 1)
 
   while (k) {
-    cmp = unsigned_pointer_compare(KEY_PTR_AT(hash, n), key);
+    cmp = pointer_compare(KEY_PTR_AT(hash, n), key);
 
     k >>= 1;
 
@@ -114,6 +103,8 @@ int fasthash_find(FastHash *hash, void *key, void **out_value) {
 }
 
 int fasthash_unref(FastHash *hash) {
+  assert(hash);
+
   free((void *)hash->items);
   free((void *)hash);
   return 0;

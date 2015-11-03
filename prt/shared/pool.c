@@ -2,6 +2,7 @@
 
 int string_pool_new(size_t capacity, StringPool **out_pool) {
   StringPool *pool;
+  assert(out_pool);
 
   pool = NEW0(StringPool);
   if (!pool)
@@ -50,6 +51,7 @@ int string_pool_add(StringPool *pool, const char *str, size_t *out_index) {
 
 int string_pool_get(StringPool *pool, size_t index, char **out_str) {
   assert(pool);
+  assert(out_str);
 
   if (pool->capacity <= index)
     return -EINVAL;
