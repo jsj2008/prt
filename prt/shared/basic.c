@@ -4,6 +4,17 @@ uint32_t primes[] = {
     31, 127, 709, 4001, 8191, 17851, 38867, 84011, 131071, 524287,
 };
 
+int pointer_compare(void *a, void *b) {
+  uintptr_t _a = (uintptr_t)a;
+  uintptr_t _b = (uintptr_t)b;
+
+  if (_a > _b)
+    return 1;
+  else if (_a < _b)
+    return -1;
+  return 0;
+}
+
 uint32_t nearest_prime(uint32_t x) {
   size_t i;
   for (i = 0; i < COUNT(primes); ++i)
