@@ -93,12 +93,11 @@ int fasthash_find(FastHash *hash, void *key, void **out_value) {
 #define KEY_PTR_AT(h, n) *((void **)h->items + n * 2)
 #define VALUE_PTR_AT(h, n) *((void **)h->items + (n * 2) + 1)
 
-  while (k && n < (hash->num_items - 1)) {
+  while (k) {
     cmp = unsigned_pointer_compare(KEY_PTR_AT(hash, n), key);
 
     k >>= 1;
 
-    /* printf("x(k: %zu, n: %zu)\n", k, n); */
     if (cmp == 0) {
       *out_value = VALUE_PTR_AT(hash, n);
       return 0;
