@@ -15,23 +15,6 @@ static GLenum _op_lookup[] = {
 static GLenum _func_lookup[] = {GL_MIN, GL_MAX, GL_FUNC_ADD, GL_FUNC_SUBTRACT,
                                 GL_FUNC_REVERSE_SUBTRACT};
 
-/* @func `_ptr_compare`
- * @desc Unsigned pointer compare
- *
- * @param(a) First pointer
- * @param(b) Second pointer
- *
- * @ret 0 when `a` == `b`, 1 when `a` > `b`, -1 when `b` > `a`
- */
-static int _ptr_compare(const void *a, const void *b) {
-  if ((uintptr_t)a > (uintptr_t)b)
-    return 1;
-  else if ((uintptr_t)a < (uintptr_t)b)
-    return -1;
-
-  return 0;
-}
-
 /* @func `blendmode_to_gl`
  * @desc Converts `BlendMode` in `bm` to OpenGL counterparts
  *
@@ -290,7 +273,7 @@ int renderinfo_set_textures(RenderInfo *info, GPUTexture **textures,
       return r;
   }
 
-  return array_sort(&info->textures, _ptr_compare, sizeof(GPUTexture *));
+  return array_sort(&info->textures, pointer_compare, sizeof(GPUTexture *));
 }
 
 /* @func `renderinfo_set_context`
@@ -324,39 +307,10 @@ int renderinfo_unref(RenderInfo *info) {
 /* the sort order determines how much OpenGL state we need to change/keep
  * between successive render calls */
 int renderinfo_compare(const RenderInfo *a, const RenderInfo *b) {
-  size_t num_textures = 0, i;
   assert(a);
   assert(b);
 
-  if (a->order > b->order)
-    return 1;
-  else if (a->order < b->order)
-    return -1;
-
-  if (a->shader_pass > b->shader_pass)
-    return 1;
-  else if (a->shader_pass < b->shader_pass)
-    return -1;
-
-  num_textures =
-      MIN(a->textures.occupied, b->textures.occupied) / sizeof(GPUTexture *);
-
-  /* textures should be sorted by this point already */
-  for (i = 0; i < num_textures; ++i) {
-    if (ARRAY_GET(&a->textures, i, GPUTexture) >
-        ARRAY_GET(&b->textures, i, GPUTexture))
-      return 1;
-    else if (ARRAY_GET(&a->textures, i, GPUTexture) <
-             ARRAY_GET(&b->textures, i, GPUTexture))
-      return -1;
-  }
-
-  if (a->blending.value > b->blending.value)
-    return 1;
-  else if (a->blending.value < b->blending.value)
-    return -1;
-
-  return 0;
+  return memcmp(a, b, sizeof(*a));
 }
 
 int renderinfo_sort(RenderInfo *infos, size_t num) {
@@ -380,38 +334,8 @@ int renderinfo_erase(Array *array, const RenderInfo *info) {
 
   for (i = 0; i < num_items; ++i) {
     ri = ARRAY_GET(array, i, RenderInfo);
-
-    if (ri->order != info->order)
-      continue;
-
-    if (ri->blending.value != info->blending.value)
-      continue;
-
-    if (ri->shader_pass != info->shader_pass)
-      continue;
-
-    if (ri->primitive != info->primitive)
-      continue;
-
-    if (ri->primitive != info->primitive)
-      continue;
-
-    if (ri->attribs != info->attribs)
-      continue;
-
-    if (ri->textures.items != info->textures.items)
-      continue;
-
-    if (ri->textures.capacity != info->textures.capacity)
-      continue;
-
-    if (ri->textures.occupied != info->textures.occupied)
-      continue;
-
-    if (ri->camera != info->camera)
-      continue;
-
-    return array_remove(array, i * sizeof(info), sizeof(info));
+    if (!renderinfo_compare(ri, info))
+      return array_remove(array, i * sizeof(info), sizeof(info));
   }
 
   return -ENOENT;
@@ -465,6 +389,8 @@ int renderinfo_render(RenderInfo *info, float dt) {
     if (i & 1)
       GL_CHECK(glEnableVertexAttribArray(n));
 
+  /* TODO: Support for instanced/indirect draw calls
+   */
   GL_CHECK(glDrawArrays(info->primitive->primitive,
                         info->primitive->start_primitive,
                         info->primitive->num_primitives));
