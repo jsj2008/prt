@@ -26,6 +26,10 @@ static GLenum _func_lookup[] = {GL_MIN, GL_MAX, GL_FUNC_ADD, GL_FUNC_SUBTRACT,
  * @ret always 0
  */
 int blendmode_to_gl(BlendMode bm, GLenum *src, GLenum *dst, GLenum *func) {
+  assert(src);
+  assert(dst);
+  assert(func);
+
   *src = _op_lookup[bm.source];
   *dst = _op_lookup[bm.destination];
   *func = _func_lookup[bm.func];
@@ -41,6 +45,8 @@ int blendmode_to_gl(BlendMode bm, GLenum *src, GLenum *dst, GLenum *func) {
  * @param(bm)   Output `BlendMode`
  */
 int gl_to_blendmode(GLenum src, GLenum dst, GLenum func, BlendMode *bm) {
+  assert(bm);
+
   switch (src) {
   case GL_ZERO:
     bm->source = 0;
@@ -173,6 +179,7 @@ int gl_to_blendmode(GLenum src, GLenum dst, GLenum func, BlendMode *bm) {
  */
 int renderinfo_new(RenderInfo **out_ri) {
   RenderInfo *ri;
+  assert(out_ri);
 
   ri = NEW0(RenderInfo);
   if (!ri)
@@ -201,6 +208,7 @@ int renderinfo_new(RenderInfo **out_ri) {
 int renderinfo_set_primitives(RenderInfo *info, GLenum type, size_t start,
                               size_t num) {
   assert(info);
+
   info->primitive->primitive = type;
   info->primitive->start_primitive = start;
   info->primitive->num_primitives = num;
@@ -217,6 +225,7 @@ int renderinfo_set_primitives(RenderInfo *info, GLenum type, size_t start,
  */
 int renderinfo_set_vertex_attribs(RenderInfo *info, VertexAttrib attrib) {
   assert(info);
+
   info->attribs |= (1 << attrib);
   return 0;
 }
@@ -234,6 +243,7 @@ int renderinfo_set_vertex_attribs(RenderInfo *info, VertexAttrib attrib) {
 int renderinfo_set_blending(RenderInfo *info, GLenum src, GLenum dst,
                             GLenum func) {
   assert(info);
+
   return gl_to_blendmode(src, dst, func, &info->blending);
 }
 
@@ -247,6 +257,7 @@ int renderinfo_set_blending(RenderInfo *info, GLenum src, GLenum dst,
  */
 int renderinfo_set_pass(RenderInfo *info, Pass *pass) {
   assert(info);
+
   info->shader_pass = pass;
   return 0;
 }
@@ -265,6 +276,7 @@ int renderinfo_set_textures(RenderInfo *info, GPUTexture **textures,
   size_t i;
   int r;
   assert(info);
+  assert(textures);
 
   for (i = 0; i < num; ++i) {
     r = array_add(&info->textures, (const char *)(textures + i),
@@ -286,6 +298,7 @@ int renderinfo_set_textures(RenderInfo *info, GPUTexture **textures,
  */
 int renderinfo_set_context(RenderInfo *info, void *context) {
   assert(info);
+
   info->context = context;
   return 0;
 }
@@ -299,6 +312,7 @@ int renderinfo_set_context(RenderInfo *info, void *context) {
  */
 int renderinfo_unref(RenderInfo *info) {
   assert(info);
+
   free((void *)info->textures.items);
   free((void *)info);
   return 0;
@@ -315,6 +329,7 @@ int renderinfo_compare(const RenderInfo *a, const RenderInfo *b) {
 
 int renderinfo_sort(RenderInfo *infos, size_t num) {
   assert(infos);
+
   qsort(infos, num, sizeof(RenderInfo),
         (int (*)(const void *, const void *))renderinfo_compare);
   return 0;
@@ -322,13 +337,14 @@ int renderinfo_sort(RenderInfo *infos, size_t num) {
 
 int renderinfo_set_camera(RenderInfo *info, struct _Camera *camera) {
   assert(info);
+
   info->camera = camera;
   return 0;
 }
 
 int renderinfo_erase(Array *array, const RenderInfo *info) {
   size_t num_items = array->occupied / sizeof(*info), i;
-  typeof(info) ri;
+  const RenderInfo *ri;
   assert(array);
   assert(info);
 
@@ -342,6 +358,8 @@ int renderinfo_erase(Array *array, const RenderInfo *info) {
 }
 
 int renderinfo_set_order(RenderInfo *info, uint32_t order) {
+  assert(info);
+
   info->order = order;
   return 0;
 }
