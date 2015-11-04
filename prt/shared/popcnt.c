@@ -34,6 +34,38 @@ uint64_t popcnt64_fast(uint64_t *p, size_t len) {
 
 #ifdef PRT_ARM
 #ifdef PRT_ARCH64
+uint64_t bsf64_fast(uint64_t *p, size_t len, size_t offset) {
+  unsigned long long *d = p;
+  unsigned int masked = 0, i = 0;
+  int c = 0;
+  assert(offset < 64);
+
+  masked = len & ~3;
+  for (; i < masked; i += 4) {
+    __asm__("LD1 {v0.2D}, [%1], #16           \n\t"
+            "CLZ v0.16b, v0.16b               \n\t"
+            "UMOV x0, v0.d[0]                 \n\t"
+            "UMOV x1, v0.d[1]                 \n\t"
+            "CMP  x0, #0                      \n\t"
+            "B.EQ out                         \n\t"
+            ""
+            "out:                             \n\t"
+            : "+r"(c), "+r"(d), "r"(offset)::"x0", "v0", "v1", "v2", "v3");
+  }
+
+/*
+  for (; i < len; ++i)
+    __asm__("LD1  {v0.D}[0], [%1], #8 \n\t"
+            "CNT  v0.8b, v0.8b        \n\t"
+            "UADDLV h1, v0.8b         \n\t"
+            "UMOV x0, v1.d[0]         \n\t"
+            "ADD %0, x0, %0           \n\t"
+            : "+r"(c), "+r"(d)::"x0", "v0", "v1");
+            */
+out:
+  return c;
+}
+
 uint64_t popcnt64_fast(uint64_t *p, size_t len) {
   unsigned long long *d = p;
   unsigned int masked = 0, i = 0;
