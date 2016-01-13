@@ -2,6 +2,26 @@
 #include <prt/shared/json.h>
 #include <GLES3/gl31.h>
 
+/* @func `gl_shader_type`
+ * @desc Converts `ShaderType` into GL shader type
+ *
+ * @param(type)  ShaderType type to convert trom
+ *
+ * @ret `GLuint` of the type
+ */
+GLuint gl_shader_type(ShaderType type) {
+  switch (type) {
+    case ST_VERTEX:
+      return GL_VERTEX_SHADER;
+    case ST_FRAGMENT:
+      return GL_FRAGMENT_SHADER;
+    case ST_COMPUTE:
+      return GL_COMPUTE_SHADER;
+    default:
+      return GL_INVALID;
+  }
+}
+
 /* @func `et_from_string`
  * @desc Converts `EffectType` from string representation
  *
@@ -456,7 +476,7 @@ int shader_load_from(Shader *shader, FileResource *fr) {
   GLint size[] = {fr->size - 1};
   GLenum type;
 
-  type = shader->type == ST_VERTEX ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER;
+  type = gl_shader_type(shader->type);
   sh = glCreateShader(type);
 
   if (sh == 0)
