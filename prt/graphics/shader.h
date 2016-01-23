@@ -95,7 +95,7 @@ typedef struct _ShaderBinding {
 
 EffectType et_from_string(const char *s);
 ShaderVariableType svt_from_string(const char *s);
-GLuint gl_shader_type(ShaderType type);
+uint32_t gl_shader_type(ShaderType type);
 
 int set_uniform(ShaderVariableType type, int32_t location, void *value);
 int create_effect(const char *frompath, ResourceManager *manager,

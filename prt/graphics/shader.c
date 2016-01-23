@@ -9,7 +9,7 @@
  *
  * @ret `GLuint` of the type
  */
-GLuint gl_shader_type(ShaderType type) {
+uint32_t gl_shader_type(ShaderType type) {
   switch (type) {
     case ST_VERTEX:
       return GL_VERTEX_SHADER;
@@ -18,7 +18,7 @@ GLuint gl_shader_type(ShaderType type) {
     case ST_COMPUTE:
       return GL_COMPUTE_SHADER;
     default:
-      return GL_INVALID;
+      return GL_INVALID_ENUM;
   }
 }
 
