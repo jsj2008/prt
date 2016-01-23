@@ -10,7 +10,7 @@ of most common tasks:
   * avl tree
   * hashtable
   * sparse hashtable with lazy allocated buckets
-  * FastHash for small and effecient key/value semantics with up to 100 elements
+  * FastHash for small and effecient key/value semantics with up to 1000 elements
  * runtime
   * resource manager
   * asynchronous loading
