@@ -133,7 +133,7 @@ typedef enum _LOG_LEVEL {
 
 extern uint32_t primes[];
 
-int pointer_compare(void *a, void *b);
+int pointer_compare(const void *a, const void *b);
 
 /* 10 primes from 31 to 524287; this table is used
    for determining next number of buckets in a hashtable */

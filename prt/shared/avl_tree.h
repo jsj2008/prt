@@ -21,7 +21,7 @@ typedef struct _BinaryTreeNode {
   uint32_t height;
 } BinaryTreeNode;
 
-typedef int (*BTCompare)(void *, void *);
+typedef int (*BTCompare)(const void *, const void *);
 
 typedef struct _BinaryTree {
   size_t num_items;
