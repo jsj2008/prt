@@ -31,7 +31,7 @@ void *_resource_loader(void *load_args) {
   RmLoadCallback loadcb;
   void *loadcb_context;
   WaitHandle *handle;
-  const char *path;
+  const char *path, *duppath;
   int r;
 
   args = (struct LoadArgs *)load_args;
@@ -49,7 +49,7 @@ void *_resource_loader(void *load_args) {
     goto out;
   }
 
-  r = hashtable_add_str(args->rm->resources, path, (void *)fr);
+  r = hashtable_add_str(args->rm->resources, fr->path, (void *)fr);
   if (r < 0) {
     file_resource_unref(fr);
     Log("async_resource_loader add error: %i\n", r);
